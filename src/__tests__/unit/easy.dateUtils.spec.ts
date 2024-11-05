@@ -1,4 +1,4 @@
-import { getDaysInMonth, getWeekDates, isLeapYear } from '../../utils/dateUtils';
+import { getDaysInMonth, getWeekDates, getWeeksAtMonth, isLeapYear } from '../../utils/dateUtils';
 
 // 윤년 판단을 위해 추가한 테스트 코드
 describe('isLeapYear', () => {
@@ -122,7 +122,29 @@ describe('getWeekDates', () => {
 });
 
 describe('getWeeksAtMonth', () => {
-  it('2024년 7월 1일의 올바른 주 정보를 반환해야 한다', () => {});
+  /**
+   * 2024년 7월 1일의 올바른 주 정보를 반환해야 한다
+   * -> fix: 2024년 7월의 모든 날짜를 주차별로 반환해야 한다
+   * -> 소신발언: 올바른 주 정보 보다 모든 날짜를 주차별로 가 더 명확한 description이라 생각함
+   *
+   */
+  it('2024년 7월의 모든 날짜를 주차별로 반환해야 한다', () => {
+    const julyFirst = new Date(2024, 6, 1);
+    const weeks = getWeeksAtMonth(julyFirst);
+
+    // -> fix: 결과 값의 길이를 검증하는  assertion 추가
+    expect(weeks.flat().filter((day) => day !== null)).toHaveLength(31);
+
+    const expectedWeeks = [
+      [null, 1, 2, 3, 4, 5, 6],
+      [7, 8, 9, 10, 11, 12, 13],
+      [14, 15, 16, 17, 18, 19, 20],
+      [21, 22, 23, 24, 25, 26, 27],
+      [28, 29, 30, 31, null, null, null],
+    ];
+
+    expect(weeks).toEqual(expectedWeeks);
+  });
 });
 
 describe('getEventsForDay', () => {

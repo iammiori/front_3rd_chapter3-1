@@ -31,6 +31,11 @@ export function getWeekDates(date: Date): Date[] {
   return weekDates;
 }
 
+/**
+ *
+ * @param currentDate 특정 날짜
+ * @returns 입력한 월의 주차별 날짜 arr
+ */
 export function getWeeksAtMonth(currentDate: Date) {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
