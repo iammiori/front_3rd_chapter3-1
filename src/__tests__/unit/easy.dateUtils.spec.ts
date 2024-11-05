@@ -1,26 +1,47 @@
-import { Event } from '../../types';
-import {
-  fillZero,
-  formatDate,
-  formatMonth,
-  formatWeek,
-  getDaysInMonth,
-  getEventsForDay,
-  getWeekDates,
-  getWeeksAtMonth,
-  isDateInRange,
-} from '../../utils/dateUtils';
+import { getDaysInMonth, isLeapYear } from '../../utils/dateUtils';
+
+// 윤년 판단을 위해 추가한 테스트 코드
+describe('isLeapYear', () => {
+  it('2024년은 윤년이다', () => {
+    expect(isLeapYear(2024)).toBe(true);
+  });
+
+  it('2023년은 윤년이 아니다', () => {
+    expect(isLeapYear(2023)).toBe(false);
+  });
+});
 
 describe('getDaysInMonth', () => {
-  it('1월은 31일 수를 반환한다', () => {});
+  it('1월은 31일 수를 반환한다', () => {
+    expect(getDaysInMonth(2024, 1)).toBe(31);
+  });
 
-  it('4월은 30일 일수를 반환한다', () => {});
+  it('4월은 30일 일수를 반환한다', () => {
+    expect(getDaysInMonth(2024, 4)).toBe(30);
+  });
 
-  it('윤년의 2월에 대해 29일을 반환한다', () => {});
+  it('윤년의 2월에 대해 29일을 반환한다', () => {
+    expect(getDaysInMonth(2024, 2)).toBe(29);
+  });
 
-  it('평년의 2월에 대해 28일을 반환한다', () => {});
+  it('평년의 2월에 대해 28일을 반환한다', () => {
+    expect(getDaysInMonth(2023, 2)).toBe(28);
+  });
 
-  it('유효하지 않은 월에 대해 적절히 처리한다', () => {});
+  /**
+   * 유효하지 않은 월에 대해 적절히 처리한다.
+   * -> 적절히 처리한다 가 모호해서, tc 수정
+   *
+   */
+  it('0 이하의 월 지정시, 작년 12월부터 역순으로 한 달씩 감소하며 각 월의 일수를 반환한다', () => {
+    expect(getDaysInMonth(2024, 0)).toBe(31);
+    expect(getDaysInMonth(2024, -1)).toBe(30);
+  });
+
+  it('12 초과의 월 지정시, 다음해 1월부터 순차적으로 한 달씩 증가하며 각 월의 일수를 반환한다', () => {
+    expect(getDaysInMonth(2024, 13)).toBe(31);
+    expect(getDaysInMonth(2024, 14)).toBe(28);
+  });
 });
 
 describe('getWeekDates', () => {
