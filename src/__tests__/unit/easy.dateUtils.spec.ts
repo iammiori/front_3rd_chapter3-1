@@ -8,6 +8,7 @@ import {
   getEventsForDay,
   getWeekDates,
   getWeeksAtMonth,
+  isDateInRange,
   isLeapYear,
 } from '../../utils/dateUtils';
 
@@ -290,17 +291,35 @@ describe('isDateInRange', () => {
   const rangeStart = new Date('2024-07-01');
   const rangeEnd = new Date('2024-07-31');
 
-  it('범위 내의 날짜 2024-07-10에 대해 true를 반환한다', () => {});
+  it('범위 내의 날짜 2024-07-10에 대해 true를 반환한다', () => {
+    const date = new Date('2024-07-10');
+    expect(isDateInRange(date, rangeStart, rangeEnd)).toBe(true);
+  });
 
-  it('범위의 시작일 2024-07-01에 대해 true를 반환한다', () => {});
+  it('범위의 시작일 2024-07-01에 대해 true를 반환한다', () => {
+    expect(isDateInRange(rangeStart, rangeStart, rangeEnd)).toBe(true);
+  });
 
-  it('범위의 종료일 2024-07-31에 대해 true를 반환한다', () => {});
+  it('범위의 종료일 2024-07-31에 대해 true를 반환한다', () => {
+    expect(isDateInRange(rangeEnd, rangeStart, rangeEnd)).toBe(true);
+  });
 
-  it('범위 이전의 날짜 2024-06-30에 대해 false를 반환한다', () => {});
+  it('범위 이전의 날짜 2024-06-30에 대해 false를 반환한다', () => {
+    const date = new Date('2024-06-30');
+    expect(isDateInRange(date, rangeStart, rangeEnd)).toBe(false);
+  });
 
-  it('범위 이후의 날짜 2024-08-01에 대해 false를 반환한다', () => {});
+  it('범위 이후의 날짜 2024-08-01에 대해 false를 반환한다', () => {
+    const date = new Date('2024-08-01');
+    expect(isDateInRange(date, rangeStart, rangeEnd)).toBe(false);
+  });
 
-  it('시작일이 종료일보다 늦은 경우 모든 날짜에 대해 false를 반환한다', () => {});
+  it('시작일이 종료일보다 늦은 경우 모든 날짜에 대해 false를 반환한다', () => {
+    const startDate = new Date('2024-11-06');
+    const endDate = new Date('2024-11-01');
+    const anyDate = new Date('2024-11-03');
+    expect(isDateInRange(anyDate, startDate, endDate)).toBe(false);
+  });
 });
 
 describe('fillZero', () => {
