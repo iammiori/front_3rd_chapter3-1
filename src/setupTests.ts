@@ -1,5 +1,5 @@
-import { setupServer } from 'msw/node';
 import '@testing-library/jest-dom';
+import { setupServer } from 'msw/node';
 
 import { handlers } from './__mocks__/handlers';
 
@@ -8,6 +8,8 @@ export const server = setupServer(...handlers);
 
 beforeAll(() => {
   server.listen();
+
+  vi.useFakeTimers();
 });
 
 beforeEach(() => {
@@ -20,6 +22,8 @@ afterEach(() => {
 });
 
 afterAll(() => {
+  vi.useRealTimers();
+
   vi.resetAllMocks();
   server.close();
 });
